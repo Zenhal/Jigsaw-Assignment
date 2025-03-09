@@ -201,6 +201,7 @@ public class GameManager : MonoBehaviour
     {
         currentGameData.ResetData();
         currentGameData.SetCurrentLevelIndex(currentLevelCount);
+        SaveManager.SaveGame(currentGameData);
     }
 
     public void OnNextLevelButtonClicked()

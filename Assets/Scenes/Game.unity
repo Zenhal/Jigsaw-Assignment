@@ -1126,7 +1126,7 @@ MonoBehaviour:
   audioSource: {fileID: 1757019619}
   placeSound: {fileID: 8300000, guid: 374caf71353154c4f9a7cb7f4cca8552, type: 3}
   failedPlacement: {fileID: 8300000, guid: 165091c9b33f349a8807e6f4ef72c2db, type: 3}
-  winSound: {fileID: 8300000, guid: c8f5836676dd84561bf46223dc83fa17, type: 3}
+  winSound: {fileID: 8300000, guid: a0a63f86c4c384cd89cce93ddc5139b5, type: 3}
 --- !u!4 &1757019621
 Transform:
   m_ObjectHideFlags: 0

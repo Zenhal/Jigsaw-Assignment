@@ -16,19 +16,28 @@ MonoBehaviour:
   pieces:
   - pieceImage: {fileID: 21300000, guid: 261d4b62df7b94ca792812d2d6b263f1, type: 3}
     index: 0
+    isPlaced: 0
   - pieceImage: {fileID: 21300000, guid: 7586ae668fc1147b59710ae1f7e3a061, type: 3}
     index: 1
+    isPlaced: 0
   - pieceImage: {fileID: 21300000, guid: 4ff08450687184494be1b497c3ab48a3, type: 3}
     index: 2
+    isPlaced: 0
   - pieceImage: {fileID: 21300000, guid: 176f1daf64ea14f0a9cf3f690058169c, type: 3}
     index: 3
+    isPlaced: 0
   - pieceImage: {fileID: 21300000, guid: 19d7fba2e6bc941e6abbf8bb8516940b, type: 3}
     index: 4
+    isPlaced: 0
   - pieceImage: {fileID: 21300000, guid: 171cd7c8de4d447cfba1c034d1155e0a, type: 3}
     index: 5
+    isPlaced: 0
   - pieceImage: {fileID: 21300000, guid: cb6fb27f314d441e787d27d711fab3f0, type: 3}
     index: 6
+    isPlaced: 0
   - pieceImage: {fileID: 21300000, guid: a2ea7bf95940940a993506297f921d8f, type: 3}
     index: 7
+    isPlaced: 0
   - pieceImage: {fileID: 21300000, guid: 4899986787861474f91f3758dcbc1e3b, type: 3}
     index: 8
+    isPlaced: 0

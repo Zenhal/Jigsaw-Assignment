@@ -17,13 +17,26 @@ public class GameManager : MonoBehaviour
     private List<Vector2> gridPositions = new List<Vector2>();
     private SlotBase slotBase;
     private JigsawData currentJigsawData;
+    private GameData currentGameData;
 
     private int piecePlacedCount = 0;
     private int currentLevelCount = 0;
     
     private void Start()
     {
+        InitialiseGameData();
         LoadLevel(currentLevelCount); // Load first puzzle by default
+    }
+
+    private void InitialiseGameData()
+    {
+        currentGameData = SaveManager.LoadGame();
+        if(currentGameData != null)
+            currentLevelCount = currentGameData.GetCurrentLevelIndex();
+        else
+        {
+            currentGameData = new GameData();
+        }
     }
 
     private void OnEnable()
@@ -40,13 +53,35 @@ public class GameManager : MonoBehaviour
     {
         if (IsValidLevel(index) == false) return;
 
-        currentJigsawData = jigsawDatas[index];
-        
+        currentJigsawData = Instantiate(jigsawDatas[index]);
+
+
+        InitialisePieceDatas();
         InitialiseSlots(currentJigsawData.slotObject);
         InitialisePieceContainer();
         
         GenerateJigsawPieces();
     }
+
+    private void InitialisePieceDatas()
+    {
+        var pieceStates = currentGameData.GetPieceSates();
+        if (pieceStates != null && pieceStates.Count > 0)
+        {
+            for (int i = 0; i < currentJigsawData.pieces.Count; i++)
+            {
+                for (int j = 0; j < pieceStates.Count; j++)
+                {
+                    if (pieceStates[j].index == i)
+                    {
+                        piecePlacedCount++;
+                        currentJigsawData.pieces[i].isPlaced = true;
+                    }
+                }
+            }
+        }
+    }
+    
 
     private void InitialiseSlots(GameObject slotObject)
     {
@@ -85,11 +120,20 @@ public class GameManager : MonoBehaviour
             var pieceData = currentJigsawData.pieces[i];
             GameObject newPiece = Instantiate(piecePrefab, pieceContainer);
             Piece piece = newPiece.GetComponent<Piece>();
-            piece.SetPiece(pieceData.pieceImage, gridPositions[i], GetSlotFromIndex(pieceData.index));
-            piece.GetComponent<RectTransform>().sizeDelta = pieceData.pieceImage.rect.size * 3 / 5;
-            piece.GetComponent<RectTransform>().anchoredPosition = gridPositions[i];
+            var slot = GetSlotFromIndex(pieceData.index);
+            var position = GetPiecePosition(pieceData, slot, i);
+            piece.SetPiece(pieceData.pieceImage, position, slot, ref pieceData);
+            //piece.GetComponent<RectTransform>().anchoredPosition = gridPositions[i];
             jigsawPieces.Add(piece);
         }
+    }
+
+    private Vector2 GetPiecePosition(PieceData pieceData, Slot slot, int index)
+    {
+        if (pieceData.isPlaced) 
+            return slot.GetRectTransform().position;
+        
+        return gridPositions[index];
     }
     
     private void ShuffleList<T>(List<T> list)
@@ -128,7 +172,9 @@ public class GameManager : MonoBehaviour
     private void OnPiecePlaced(Dictionary<string, object> message)
     {
         piecePlacedCount++;
-        if (piecePlacedCount == slotBase.GetSlots().Count)
+        currentGameData.AddPieceStates((PieceState)message["Piece"]);
+        SaveManager.SaveGame(currentGameData);
+        if (piecePlacedCount == slotBase.GetSlots().Count) 
             ShowVictory();
     }
 
@@ -147,7 +193,14 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlaySound("win");
         victoryPanel.SetActive(true);
         currentLevelCount++;
+        SetGameData();
         nextLevelButton.gameObject.SetActive(IsValidLevel(currentLevelCount));
+    }
+
+    private void SetGameData()
+    {
+        currentGameData.ResetData();
+        currentGameData.SetCurrentLevelIndex(currentLevelCount);
     }
 
     public void OnNextLevelButtonClicked()

@@ -200,7 +200,8 @@ public class GameManager : MonoBehaviour
     private void SetGameData()
     {
         currentGameData.ResetData();
-        currentGameData.SetCurrentLevelIndex(currentLevelCount);
+        if(IsValidLevel(currentLevelCount))
+            currentGameData.SetCurrentLevelIndex(currentLevelCount);
         SaveManager.SaveGame(currentGameData);
     }
 

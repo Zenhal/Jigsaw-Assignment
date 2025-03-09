@@ -144,6 +144,7 @@ public class GameManager : MonoBehaviour
 
     private void ShowVictory()
     {
+        AudioManager.Instance.PlaySound("win");
         victoryPanel.SetActive(true);
         currentLevelCount++;
         nextLevelButton.gameObject.SetActive(IsValidLevel(currentLevelCount));

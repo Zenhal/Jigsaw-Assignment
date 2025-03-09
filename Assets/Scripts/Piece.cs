@@ -36,10 +36,12 @@ public class Piece : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             Debug.Log("Found Slot");
             rectTransform.position = slot.GetRectTransform().position;
+            AudioManager.Instance.PlaySound("placed");
             EventManager.TriggerEvent("PiecePlaced", null);
         }
         else
         {
+            AudioManager.Instance.PlaySound("failed");
             rectTransform.anchoredPosition = originalPosition;
         }
     }
